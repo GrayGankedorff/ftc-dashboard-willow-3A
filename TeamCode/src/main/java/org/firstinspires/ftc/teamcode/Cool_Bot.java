@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -58,6 +59,9 @@ public class Cool_Bot extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
+    private DcMotor armMotor = null;
+    private Servo leftServo = null;
+    private Servo rightServo = null;
 
     @Override
     public void runOpMode() {
@@ -69,6 +73,9 @@ public class Cool_Bot extends LinearOpMode {
         // step (using the FTC Robot Controller app on the phone).
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+        armMotor = hardwareMap.get(DcMotor.class, "arm_motor");
+        leftServo = hardwareMap.get(Servo.class, "left_servo");
+        rightServo = hardwareMap.get(Servo.class, "right_servo");
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
@@ -105,7 +112,26 @@ public class Cool_Bot extends LinearOpMode {
             // Send calculated power to wheels
             leftDrive.setPower(leftPower);
             rightDrive.setPower(rightPower);
-
+            //arm motor code
+            if (gamepad1.dpad_up){
+                armMotor.setPower(0.5);
+            }else{
+                armMotor.setPower(0);
+            }
+            if (gamepad1.dpad_down){
+                armMotor.setPower(-0.5);
+            }else{
+                armMotor.setPower(0);
+            }
+            //Claw code
+            if (gamepad1.left_bumper) {
+                rightServo.setPosition(30);
+                leftServo.setPosition(-30);
+            }
+            if (gamepad1.right_bumper) {
+                rightServo.setPosition(-30);
+                leftServo.setPosition(30);
+            }
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
