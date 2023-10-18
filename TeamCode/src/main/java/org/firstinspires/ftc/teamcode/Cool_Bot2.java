@@ -36,6 +36,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -55,6 +56,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="Cool_Bot2")
+@Config
 //@Disabled
 public class Cool_Bot2 extends LinearOpMode {
 
@@ -65,6 +67,12 @@ public class Cool_Bot2 extends LinearOpMode {
     private DcMotorEx armMotor = null;
     private Servo leftServo = null;
     private Servo rightServo = null;
+    public static int rightClaw_open = 70;
+    public static int rightClaw_close = -40;
+    public static int leftClaw_open = -70;
+    public static int leftClaw_close = 40;
+    public static int armUp = -650;
+    public static int armDown = -92;
 
     @Override
     public void runOpMode() {
@@ -86,8 +94,8 @@ public class Cool_Bot2 extends LinearOpMode {
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -125,7 +133,7 @@ public class Cool_Bot2 extends LinearOpMode {
             //Arm Code using encoder
             if (gamepad1.dpad_up) {
                 // Set the motor's target position to 300 ticks
-                armMotor.setTargetPosition(2000);
+                armMotor.setTargetPosition(armUp);
                 // Switch to RUN_TO_POSITION mode
                 armMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
                 // Start the motor moving by setting the max velocity to 200 ticks per second
@@ -133,7 +141,7 @@ public class Cool_Bot2 extends LinearOpMode {
             }
             if (gamepad1.dpad_down) {
                 // Set the motor's target position to 300 ticks
-                armMotor.setTargetPosition(0);
+                armMotor.setTargetPosition(armDown);
                 // Switch to RUN_TO_POSITION mode
                 armMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
                 // Start the motor moving by setting the max velocity to 200 ticks per second
@@ -141,13 +149,13 @@ public class Cool_Bot2 extends LinearOpMode {
             }
 
             //Claw Code
-            if (gamepad1.left_bumper) {
-                rightServo.setPosition(30);
-                leftServo.setPosition(-30);
+            if (gamepad1.dpad_left) {
+                rightServo.setPosition(leftClaw_open);
+                leftServo.setPosition(rightClaw_open);
             }
-            if (gamepad1.right_bumper) {
-                rightServo.setPosition(-30);
-                leftServo.setPosition(30);
+            if (gamepad1.dpad_right) {
+                rightServo.setPosition(leftClaw_close);
+                leftServo.setPosition(rightClaw_close);
             }
 
             // Show the elapsed game time and wheel power.
