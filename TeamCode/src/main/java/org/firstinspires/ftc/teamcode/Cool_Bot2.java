@@ -72,7 +72,7 @@ public class Cool_Bot2 extends LinearOpMode {
     public static int leftClaw_open = -70;
     public static int leftClaw_close = 40;
     public static int armUp = -650;
-    public static int armDown = -92;
+    public static int armDown = -100;
 
     @Override
     public void runOpMode() {
@@ -116,7 +116,7 @@ public class Cool_Bot2 extends LinearOpMode {
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
-            double drive = -gamepad1.left_stick_y;
+            double drive = gamepad1.left_stick_y;
             double turn = gamepad1.right_stick_x;
             leftPower = Range.clip(drive + turn, -1.0, 1.0);
             rightPower = Range.clip(drive - turn, -1.0, 1.0);
@@ -148,12 +148,30 @@ public class Cool_Bot2 extends LinearOpMode {
                 armMotor.setVelocity(200);
             }
 
+            //Up 10 Button
+            if(gamepad1.b) {
+                int temp = armMotor.getCurrentPosition();
+                int newPosition = temp - 10;
+                armMotor.setTargetPosition(newPosition);
+                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                armMotor.setPower(1);
+            }
+
+            //Down 10 Button
+            if(gamepad1.x) {
+                int temp = armMotor.getCurrentPosition();
+                int newPosition = temp + 10;
+                armMotor.setTargetPosition(newPosition);
+                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                armMotor.setPower(1);
+            }
+
             //Claw Code
-            if (gamepad1.dpad_left) {
+            if (gamepad1.left_bumper) {
                 rightServo.setPosition(leftClaw_open);
                 leftServo.setPosition(rightClaw_open);
             }
-            if (gamepad1.dpad_right) {
+            if (gamepad1.right_bumper) {
                 rightServo.setPosition(leftClaw_close);
                 leftServo.setPosition(rightClaw_close);
             }
