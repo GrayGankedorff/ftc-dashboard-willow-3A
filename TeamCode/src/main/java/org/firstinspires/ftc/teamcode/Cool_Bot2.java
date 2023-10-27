@@ -33,10 +33,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -67,12 +71,15 @@ public class Cool_Bot2 extends LinearOpMode {
     private DcMotorEx armMotor = null;
     private Servo leftServo = null;
     private Servo rightServo = null;
+    private ColorSensor colorSensor;
+    private DistanceSensor distanceSensor;
     public static int rightClaw_open = 70;
     public static int rightClaw_close = -40;
     public static int leftClaw_open = -70;
     public static int leftClaw_close = 40;
     public static int armUp = -650;
     public static int armDown = -100;
+    public static int object = 10;
 
     @Override
     public void runOpMode() {
@@ -87,6 +94,8 @@ public class Cool_Bot2 extends LinearOpMode {
         armMotor = hardwareMap.get(DcMotorEx.class, "arm_motor");
         leftServo = hardwareMap.get(Servo.class, "left_servo");
         rightServo = hardwareMap.get(Servo.class, "right_servo");
+        colorSensor = hardwareMap.get(ColorSensor.class,"color_sensor");
+        distanceSensor = hardwareMap.get(DistanceSensor.class, "distance_sensor");
 
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
@@ -104,6 +113,8 @@ public class Cool_Bot2 extends LinearOpMode {
         //Stops/Resets Encoder
         armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
+        waitForStart();
+
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
@@ -116,8 +127,8 @@ public class Cool_Bot2 extends LinearOpMode {
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
-            double drive = gamepad1.left_stick_y;
-            double turn = gamepad1.right_stick_x;
+            double turn = -gamepad1.right_stick_x;
+            double drive = -gamepad1.left_stick_x;
             leftPower = Range.clip(drive + turn, -1.0, 1.0);
             rightPower = Range.clip(drive - turn, -1.0, 1.0);
 
@@ -176,11 +187,25 @@ public class Cool_Bot2 extends LinearOpMode {
                 leftServo.setPosition(rightClaw_close);
             }
 
+            //Distance Sensor Code
+            if(distanceSensor.getDistance(DistanceUnit.INCH) < object) {
+                rightServo.setPosition(leftClaw_close);
+                leftServo.setPosition(rightClaw_close);
+            } else {
+                rightServo.setPosition(leftClaw_open);
+                leftServo.setPosition(rightClaw_open);
+            }
+
+
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.addData("Status", "Waiting for the motor to reach its target");
             telemetry.addData("Arm Position: ", armMotor.getCurrentPosition());
+            telemetry.addData("Object Distance: ", distanceSensor.getDistance(DistanceUnit.INCH));
+            telemetry.addData("Red: ", colorSensor.red());
+            telemetry.addData("Green: ", colorSensor.green());
+            telemetry.addData("Blue: ", colorSensor.blue());
             telemetry.update();
         }
     }
