@@ -79,7 +79,7 @@ public class Cool_Bot2 extends LinearOpMode {
     public static int leftClaw_close = 40;
     public static int armUp = -650;
     public static int armDown = -100;
-    public static int object = 10;
+    public static int object = 5;
 
     @Override
     public void runOpMode() {
@@ -128,9 +128,9 @@ public class Cool_Bot2 extends LinearOpMode {
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
             double turn = -gamepad1.right_stick_x;
-            double drive = -gamepad1.left_stick_x;
-            leftPower = Range.clip(drive + turn, -1.0, 1.0);
-            rightPower = Range.clip(drive - turn, -1.0, 1.0);
+            double drive = gamepad1.left_stick_x;
+            leftPower = Range.clip(drive + turn, -0.3, 0.3);
+            rightPower = Range.clip(drive - turn, -0.3, 0.3);
 
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
@@ -188,13 +188,16 @@ public class Cool_Bot2 extends LinearOpMode {
             }
 
             //Distance Sensor Code
-            if(distanceSensor.getDistance(DistanceUnit.INCH) < object) {
-                rightServo.setPosition(leftClaw_close);
-                leftServo.setPosition(rightClaw_close);
-            } else {
-                rightServo.setPosition(leftClaw_open);
-                leftServo.setPosition(rightClaw_open);
+            if(gamepad1.y) {
+                if (distanceSensor.getDistance(DistanceUnit.INCH) < object) {
+                    rightServo.setPosition(leftClaw_close);
+                    leftServo.setPosition(rightClaw_close);
+                }
             }
+            //else {
+            //    rightServo.setPosition(leftClaw_open);
+            //    leftServo.setPosition(rightClaw_open);
+            //}
 
 
             // Show the elapsed game time and wheel power.
