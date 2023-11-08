@@ -37,8 +37,8 @@ public class Cool_Bot2 extends LinearOpMode {
     public static int leftClaw_open = -70;
     public static int leftClaw_close = 40;
     public static int armUp = -650;
-    public static int armDown = -100;
-    public static int object = 5;
+    public static int armDown = -60;
+    public static int object = 1;
     public static double speed = 1.0;
 
     @Override
@@ -161,8 +161,8 @@ public class Cool_Bot2 extends LinearOpMode {
             }
 
             //Telemetry
-            //(delete) telemetry.addData("Status", "Run Time: " + runtime.toString());
-            //(2 errors on this) telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.addData("Arm Position: ", armMotor.getCurrentPosition());
             telemetry.addData("Driving/Turning Power: ", speed);
             telemetry.addData("Object Distance: ", distanceSensor.getDistance(DistanceUnit.INCH));
