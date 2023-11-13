@@ -80,8 +80,8 @@ public class Cool_Bot2 extends LinearOpMode {
             double leftPower;
             double rightPower;
                 //Movement
-            double turn = -gamepad1.right_stick_x;
-            double drive = gamepad1.left_stick_x;
+            double turn = gamepad1.left_stick_x;
+            double drive = gamepad1.left_stick_y;
 
             leftPower = Range.clip(drive + turn, -speed, speed);
             rightPower = Range.clip(drive - turn, -speed, speed);
@@ -159,7 +159,7 @@ public class Cool_Bot2 extends LinearOpMode {
 
             //Telemetry
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+            //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.addData("Arm Position: ", armMotor.getCurrentPosition());
             telemetry.addData("Driving/Turning Power: ", speed);
             telemetry.addData("Object Distance: ", distanceSensor.getDistance(DistanceUnit.INCH));
