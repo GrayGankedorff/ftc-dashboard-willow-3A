@@ -99,11 +99,8 @@ public class Cool_Bot2 extends LinearOpMode {
 
             //Arm Lower to Position (Using Encoder)
             if (gamepad1.dpad_down) {
-                // Set the motor's target position to 300 ticks
                 armMotor.setTargetPosition(armDown);
-                // Switch to RUN_TO_POSITION mode
                 armMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-                // Start the motor moving by setting the max velocity to 200 ticks per second
                 armMotor.setVelocity(200);
             }
 
@@ -162,7 +159,7 @@ public class Cool_Bot2 extends LinearOpMode {
 
             //Telemetry
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.addData("Arm Position: ", armMotor.getCurrentPosition());
             telemetry.addData("Driving/Turning Power: ", speed);
             telemetry.addData("Object Distance: ", distanceSensor.getDistance(DistanceUnit.INCH));
