@@ -29,14 +29,14 @@ public class Cool_Bot2 extends LinearOpMode {
     private DcMotorEx armMotor = null;
     private Servo leftServo = null;
     private Servo rightServo = null;
-    private ColorSensor colorSensor;
+    //private ColorSensor colorSensor;
     private DistanceSensor distanceSensor;
         //Public
     public static int rightClaw_open = 70;
     public static int rightClaw_close = -40;
     public static int leftClaw_open = -70;
     public static int leftClaw_close = 40;
-    public static int armUp = -650;
+    public static int armUp = -500;
     public static int armDown = -60;
     public static int object = 1;
     public static double speed = 1.0;
@@ -55,7 +55,7 @@ public class Cool_Bot2 extends LinearOpMode {
         leftServo = hardwareMap.get(Servo.class, "left_servo");
         rightServo = hardwareMap.get(Servo.class, "right_servo");
             //Sensors
-        colorSensor = hardwareMap.get(ColorSensor.class,"color_sensor");
+        //colorSensor = hardwareMap.get(ColorSensor.class,"color_sensor");
         distanceSensor = hardwareMap.get(DistanceSensor.class, "distance_sensor");
 
         FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -163,9 +163,9 @@ public class Cool_Bot2 extends LinearOpMode {
             telemetry.addData("Arm Position: ", armMotor.getCurrentPosition());
             telemetry.addData("Driving/Turning Power: ", speed);
             telemetry.addData("Object Distance: ", distanceSensor.getDistance(DistanceUnit.INCH));
-            telemetry.addData("Red: ", colorSensor.red());
-            telemetry.addData("Green: ", colorSensor.green());
-            telemetry.addData("Blue: ", colorSensor.blue());
+            //telemetry.addData("Red: ", colorSensor.red());
+            //telemetry.addData("Green: ", colorSensor.green());
+            //telemetry.addData("Blue: ", colorSensor.blue());
             telemetry.update();
         }
     }
