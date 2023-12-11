@@ -11,7 +11,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 @TeleOp(name = "ggConceptAprilTag")
-@Disabled
+//@Disabled
 public class ggConceptAprilTag extends LinearOpMode {
     private static final boolean USE_WEBCAM = true; // true for webcam, false for phone camera
     private AprilTagProcessor aprilTag; //the variable to store our instance of the AprilTag processor.
