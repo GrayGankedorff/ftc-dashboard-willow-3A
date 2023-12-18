@@ -101,7 +101,7 @@ public class ggRobotAutoDriveToAprilTagTank extends LinearOpMode
     private DcMotor rightDrive  = null;  //  Used to control the right drive wheel
 
     private static final boolean USE_WEBCAM = true;  // Set true to use a webcam, or false for a phone camera
-    private static final int DESIRED_TAG_ID = -1;     // Choose the tag you want to approach or set to -1 for ANY tag.
+    private static final int DESIRED_TAG_ID = 584;     // Choose the tag you want to approach or set to -1 for ANY tag.
     private VisionPortal visionPortal;               // Used to manage the video source.
     private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
     private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
@@ -125,8 +125,8 @@ public class ggRobotAutoDriveToAprilTagTank extends LinearOpMode
         // To drive forward, most robots need the motor on one side to be reversed because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Single Gear Reduction or 90 Deg drives may require direction flips
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
         if (USE_WEBCAM)
             setManualExposure(6, 250);  // Use low exposure time to reduce motion blur
@@ -245,7 +245,7 @@ public class ggRobotAutoDriveToAprilTagTank extends LinearOpMode
         }
 
         // Make sure camera is streaming before we try to set the exposure controls
-        if (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
+        if (visionPortal.getCameraState()s != VisionPortal.CameraState.STREAMING) {
             telemetry.addData("Camera", "Waiting");
             telemetry.update();
             while (!isStopRequested() && (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING)) {
