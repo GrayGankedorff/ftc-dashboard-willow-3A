@@ -245,7 +245,7 @@ public class ggRobotAutoDriveToAprilTagTank extends LinearOpMode
         }
 
         // Make sure camera is streaming before we try to set the exposure controls
-        if (visionPortal.getCameraState()s != VisionPortal.CameraState.STREAMING) {
+        if (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
             telemetry.addData("Camera", "Waiting");
             telemetry.update();
             while (!isStopRequested() && (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING)) {
